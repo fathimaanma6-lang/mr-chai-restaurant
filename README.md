@@ -69,6 +69,26 @@ Default admin (change after first login): `admin@mrchai.com` / `Admin@123`
 Base URL `http://localhost:5000/api` with modules: auth, categories, foods, cart, orders, payments, admin.
 See [server/ENDPOINTS.md](server/ENDPOINTS.md) for every endpoint, access level and request body.
 
+## API Testing (Postman)
+
+The REST API was tested with **Postman**. A ready-to-run collection is included in [`postman/`](postman/):
+
+| File | Purpose |
+|------|---------|
+| `Mr-Chai-Restaurant.postman_collection.json` | 46 requests across 7 folders, each with automated test scripts |
+| `Mr-Chai-Local.postman_environment.json` | Environment with `baseUrl` (`http://localhost:5000/api`) |
+
+**What is covered**
+- Auth: register, login, profile, forgot / reset password
+- Admin: login, dashboard, customers, sales report
+- Menu: categories and foods (create / read / update / search / delete)
+- Cart, checkout, demo payment, order history and admin order status updates
+- Negative cases: wrong password, missing fields, missing token, customer token on admin routes, invalid order status
+
+**How to run**
+1. Start the API (`npm run dev` in `server/`) and run `npm run seed:admin` once.
+2. In Postman: **Import** both files from `postman/`, then select the *Mr. Chai - Local* environment.
+3. Right-click the collection, choose **Run collection**, and run it in order. Tokens and IDs are saved automatically between requests.
 ## Notes
 
 This is a learning / portfolio project:
@@ -86,3 +106,4 @@ This is a learning / portfolio project:
 ## Author
 
 **Your Name** - [GitHub](https://github.com/fathimaanma6-lang) | [LinkedIn](https://linkedin.com/in/your-profile)
+
