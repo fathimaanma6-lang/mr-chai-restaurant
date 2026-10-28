@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mr. Chai — Handmade tea & rice, made to order</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar navbar-expand-lg chai-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="index.html"><img src="images/logo-icon.png" alt="Mr. Chai" class="navbar-logo-img"> Mr. Chai</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" style="border-color: rgba(255,255,255,0.3);">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto ms-lg-4">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="menu.html">Menu</a></li>
+      </ul>
+      <ul class="navbar-nav align-items-lg-center" id="navAuthArea">
+        <!-- filled by js/nav.js -->
+      </ul>
+      <a href="cart.html" class="nav-link ms-lg-3">
+        Cart <span class="cart-badge" id="navCartBadge" style="display:none;"></span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="chai-section pb-0" style="background: linear-gradient(180deg, var(--chai-cream-dark) 0%, var(--chai-cream) 100%);">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <p class="section-eyebrow mb-3">Steeped daily · Cooked to order</p>
+        <h1 class="display-4 mb-3" style="line-height: 1.15;">Chai first.<br>Everything else follows.</h1>
+        <p class="fs-5 mb-4" style="color: var(--chai-brown-light); max-width: 460px;">
+          A small kitchen counter that grew into a full menu — hand-brewed tea,
+          wok-fired rice and noodles, and a few things we couldn't stop making.
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="menu.html" class="btn btn-chai-primary btn-lg">View the menu</a>
+          <a href="register.html" class="btn btn-chai-outline btn-lg">Create an account</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="ticket p-4 p-md-5" style="transform: rotate(1.5deg); max-width: 420px; margin: 0 auto;">
+          <p class="font-mono small text-uppercase mb-1" style="color: var(--chai-brown-light); letter-spacing: 0.06em;">Today's ticket</p>
+          <h3 class="display-font mb-3" style="font-size: 1.4rem;">Order #MC-20260714</h3>
+          <div class="ticket-dashed pt-3 mb-3">
+            <div class="d-flex justify-content-between font-mono small mb-2"><span>1× Masala Chai</span><span>Rs. 150</span></div>
+            <div class="d-flex justify-content-between font-mono small mb-2"><span>1× Chicken Fried Rice</span><span>Rs. 850</span></div>
+            <div class="d-flex justify-content-between font-mono small"><span>1× Gulab Jamun</span><span>Rs. 150</span></div>
+          </div>
+          <div class="ticket-dashed pt-3 d-flex justify-content-between">
+            <span class="font-mono fw-bold">Total</span>
+            <span class="font-mono fw-bold text-clay">Rs. 1,150</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CATEGORY STRIP ============ -->
+<section class="py-4" style="background-color: var(--chai-white); border-bottom: 1px solid var(--chai-cream-dark);">
+  <div class="container">
+    <div class="d-flex gap-2 flex-wrap justify-content-center" id="categoryStrip">
+      <span class="font-mono small" style="color: var(--chai-brown-light);">Loading categories…</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED ITEMS ============ -->
+<section class="chai-section">
+  <div class="container">
+    <p class="section-eyebrow mb-2">On the counter today</p>
+    <h2 class="mb-5">Featured dishes</h2>
+    <div class="row g-4" id="featuredGrid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="chai-section pt-0">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-md-4">
+        <div class="p-4">
+          <div class="fs-1 mb-2 text-clay">1</div>
+          <h4 class="h5 mb-2">Browse the menu</h4>
+          <p class="text-muted small mb-0">Search or filter by category — tea, rice & noodles, snacks, desserts.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4">
+          <div class="fs-1 mb-2 text-clay">2</div>
+          <h4 class="h5 mb-2">Add to cart & checkout</h4>
+          <p class="text-muted small mb-0">Adjust quantities, confirm your delivery address, and pay securely.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4">
+          <div class="fs-1 mb-2 text-clay">3</div>
+          <h4 class="h5 mb-2">Track your order</h4>
+          <p class="text-muted small mb-0">Follow your order from confirmed to out-for-delivery in real time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="chai-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mb-3 mb-md-0">
+        <h3 class="display-font d-flex align-items-center gap-2" style="color: var(--chai-cream); font-size: 1.3rem;"><img src="images/logo-icon.png" alt="" style="height:28px;"> Mr. Chai</h3>
+        <p class="small mb-0" style="opacity: 0.75;">Handmade tea & rice, made to order.</p>
+      </div>
+      <div class="col-md-6 text-md-end small" style="opacity: 0.75;">
+        <a href="menu.html">Menu</a> · <a href="orders.html">Track an order</a> · <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script>
+  // Load categories into the strip
+  async function loadCategories() {
+    const strip = document.getElementById('categoryStrip');
+    try {
+      const data = await apiRequest('/categories');
+      strip.innerHTML = data.categories.map(cat =>
+        `<a href="menu.html?category=${cat.id}" class="btn btn-sm btn-chai-outline">${cat.name}</a>`
+      ).join('');
+    } catch (err) {
+      strip.innerHTML = `<span class="text-danger small">${err.message}</span>`;
+    }
+  }
+
+  // Load featured foods
+  async function loadFeatured() {
+    const grid = document.getElementById('featuredGrid');
+    try {
+      const data = await apiRequest('/foods');
+      const featured = data.foods.filter(f => f.is_featured).slice(0, 6);
+      const toShow = featured.length > 0 ? featured : data.foods.slice(0, 6);
+
+      if (toShow.length === 0) {
+        grid.innerHTML = `<p class="text-muted">No dishes on the menu yet — check back soon.</p>`;
+        return;
+      }
+
+      grid.innerHTML = toShow.map(food => `
+        <div class="col-6 col-md-4 col-lg-2">
+          <div class="chai-card h-100">
+            <img src="${food.image ? UPLOADS_BASE_URL + food.image : 'https://placehold.co/400x300/F0E3CC/6B4A32?text=' + encodeURIComponent(food.name)}" class="food-card-img" alt="${food.name}">
+            <div class="p-3">
+              <h3 class="h6 mb-1">${food.name}</h3>
+              <p class="food-card-price mb-0">${formatPrice(food.price)}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      grid.innerHTML = `<p class="text-danger">${err.message}</p>`;
+    }
+  }
+
+  loadCategories();
+  loadFeatured();
+</script>
+</body>
+</html>

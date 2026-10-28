@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Orders — Mr. Chai Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../client/css/style.css" rel="stylesheet">
+<link href="css/admin.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="admin-sidebar">
+  <div class="brand"><img src="../client/images/logo-icon.png" alt="Mr. Chai" class="sidebar-logo-img"> Mr. Chai</div>
+  <nav class="nav flex-column flex-grow-1">
+    <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="orders.html">🧾 Orders</a>
+    <a class="nav-link" href="customers.html">👥 Customers</a>
+    <a class="nav-link" href="sales-report.html">📈 Sales Report</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-name" id="adminName">Admin</div>
+    <a href="#" id="adminLogoutBtn" class="nav-link p-0 small" style="opacity:0.8;">Logout</a>
+  </div>
+</aside>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="admin-main">
+  <div class="admin-topbar">
+    <div>
+      <p class="section-eyebrow mb-1">Order management</p>
+      <h1 class="h3 mb-0">All orders</h1>
+    </div>
+    <div class="d-flex gap-2 flex-wrap" id="statusFilters">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <div class="admin-table">
+    <table class="table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Customer</th>
+          <th>Total</th>
+          <th>Payment</th>
+          <th>Status</th>
+          <th>Placed</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody">
+        <tr><td colspan="7" class="text-center text-muted py-4">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- ============ ORDER DETAIL / STATUS UPDATE MODAL ============ -->
+<div class="modal fade" id="orderModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: var(--radius-md);">
+      <div class="modal-header">
+        <h5 class="modal-title">Order details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="orderModalBody">
+        <p class="text-muted">Loading…</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/admin-api.js"></script>
+<script src="js/admin-nav.js"></script>
+<script>
+  let orderModal;
+  let activeStatus = '';
+  const STATUSES = ['pending', 'confirmed', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    orderModal = new bootstrap.Modal(document.getElementById('orderModal'));
+    renderStatusFilters();
+    loadOrders();
+  });
+
+  function renderStatusFilters() {
+    const container = document.getElementById('statusFilters');
+    const allBtn = `<button class="btn btn-sm ${!activeStatus ? 'btn-chai-primary' : 'btn-chai-outline'}" data-status="">All</button>`;
+    const btns = STATUSES.map(s =>
+      `<button class="btn btn-sm ${activeStatus === s ? 'btn-chai-primary' : 'btn-chai-outline'}" data-status="${s}">${s.replace(/_/g, ' ')}</button>`
+    ).join('');
+    container.innerHTML = allBtn + btns;
+
+    container.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeStatus = btn.dataset.status;
+        renderStatusFilters();
+        loadOrders();
+      });
+    });
+  }
+
+  async function loadOrders() {
+    const body = document.getElementById('ordersBody');
+    try {
+      const query = activeStatus ? `?status=${activeStatus}` : '';
+      const data = await adminApiRequest(`/orders/admin/all${query}`);
+      renderOrders(data.orders);
+    } catch (err) {
+      body.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${err.message}</td></tr>`;
+    }
+  }
+
+  function renderOrders(orders) {
+    const body = document.getElementById('ordersBody');
+    if (orders.length === 0) {
+      body.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No orders found.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML = orders.map(o => `
+      <tr>
+        <td class="font-mono small">${o.order_number}</td>
+        <td>${o.full_name}<br><span class="small text-muted">${o.email}</span></td>
+        <td class="font-mono">${formatPrice(o.total_amount)}</td>
+        <td><span class="status-badge status-${o.payment_status}">${o.payment_status}</span></td>
+        <td><span class="status-badge status-${o.status}">${o.status.replace(/_/g, ' ')}</span></td>
+        <td class="small text-muted">${formatDate(o.created_at)}</td>
+        <td><button class="btn btn-sm btn-chai-outline" onclick="openOrder(${o.id})">Manage</button></td>
+      </tr>
+    `).join('');
+  }
+
+  async function openOrder(orderId) {
+    orderModal.show();
+    const body = document.getElementById('orderModalBody');
+    body.innerHTML = `<p class="text-muted">Loading…</p>`;
+
+    try {
+      const data = await adminApiRequest(`/orders/admin/${orderId}`);
+      const order = data.order;
+      const itemRows = data.items.map(item => `
+        <div class="d-flex justify-content-between font-mono small mb-2">
+          <span>${item.quantity}× ${item.food_name}</span><span>${formatPrice(item.subtotal)}</span>
+        </div>
+      `).join('');
+
+      body.innerHTML = `
+        <p class="font-mono small text-muted mb-3">${order.order_number} · ${formatDate(order.created_at)}</p>
+        ${itemRows}
+        <div class="ticket-dashed pt-3 mt-2 mb-3 d-flex justify-content-between">
+          <span class="font-mono fw-bold">Total</span>
+          <span class="font-mono fw-bold text-clay">${formatPrice(order.total_amount)}</span>
+        </div>
+        <p class="small mb-1"><strong>Customer:</strong> ${order.full_name} (${order.email})</p>
+        <p class="small mb-1"><strong>Delivery address:</strong> ${order.delivery_address}</p>
+        <p class="small mb-1"><strong>Phone:</strong> ${order.phone}</p>
+        ${order.notes ? `<p class="small mb-3"><strong>Notes:</strong> ${order.notes}</p>` : '<div class="mb-3"></div>'}
+
+        <label class="form-label small fw-semibold">Update status</label>
+        <select class="form-select chai-form-control mb-3" id="statusSelect" onchange="toggleEtaField()">
+          ${STATUSES.map(s => `<option value="${s}" ${s === order.status ? 'selected' : ''}>${s.replace(/_/g, ' ')}</option>`).join('')}
+        </select>
+        <div id="etaField" class="mb-3" style="display:none;">
+          <label class="form-label small fw-semibold">Estimated delivery time (minutes)</label>
+          <input type="number" min="1" class="form-control chai-form-control" id="etaMinutes" placeholder="e.g. 30">
+          <div class="form-text">Included in the SMS sent to the customer.</div>
+        </div>
+        <div id="statusUpdateError" class="alert alert-danger py-2 small" style="display:none;"></div>
+        <button class="btn btn-chai-primary w-100" onclick="updateStatus(${order.id})" id="updateStatusBtn">Update status</button>
+      `;
+      toggleEtaField();
+    } catch (err) {
+      body.innerHTML = `<p class="text-danger">${err.message}</p>`;
+    }
+  }
+
+  function toggleEtaField() {
+    const select = document.getElementById('statusSelect');
+    const etaField = document.getElementById('etaField');
+    if (!select || !etaField) return;
+    etaField.style.display = select.value === 'out_for_delivery' ? 'block' : 'none';
+  }
+
+  async function updateStatus(orderId) {
+    const select = document.getElementById('statusSelect');
+    const etaInput = document.getElementById('etaMinutes');
+    const errorBox = document.getElementById('statusUpdateError');
+    const btn = document.getElementById('updateStatusBtn');
+    errorBox.style.display = 'none';
+    btn.disabled = true;
+    btn.textContent = 'Updating…';
+
+    const body = { status: select.value };
+    if (select.value === 'out_for_delivery' && etaInput.value) {
+      body.eta_minutes = Number(etaInput.value);
+    }
+
+    try {
+      await adminApiRequest(`/orders/admin/${orderId}/status`, { method: 'PUT', body });
+      showAdminToast('Order status updated — customer notified by SMS.', 'success');
+      orderModal.hide();
+      await loadOrders();
+    } catch (err) {
+      errorBox.textContent = err.message;
+      errorBox.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Update status';
+    }
+  }
+</script>
+</body>
+</html>

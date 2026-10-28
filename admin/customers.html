@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Customers — Mr. Chai Admin</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../client/css/style.css" rel="stylesheet">
+<link href="css/admin.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="admin-sidebar">
+  <div class="brand"><img src="../client/images/logo-icon.png" alt="Mr. Chai" class="sidebar-logo-img"> Mr. Chai</div>
+  <nav class="nav flex-column flex-grow-1">
+    <a class="nav-link" href="dashboard.html">📊 Dashboard</a>
+    <a class="nav-link" href="menu.html">🍽️ Menu</a>
+    <a class="nav-link" href="orders.html">🧾 Orders</a>
+    <a class="nav-link" href="customers.html">👥 Customers</a>
+    <a class="nav-link" href="sales-report.html">📈 Sales Report</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-name" id="adminName">Admin</div>
+    <a href="#" id="adminLogoutBtn" class="nav-link p-0 small" style="opacity:0.8;">Logout</a>
+  </div>
+</aside>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main class="admin-main">
+  <div class="admin-topbar">
+    <div>
+      <p class="section-eyebrow mb-1">Customer management</p>
+      <h1 class="h3 mb-0">Customers</h1>
+    </div>
+  </div>
+
+  <div class="admin-table">
+    <table class="table mb-0 align-middle">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Joined</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="customersBody">
+        <tr><td colspan="6" class="text-center text-muted py-4">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/admin-api.js"></script>
+<script src="js/admin-nav.js"></script>
+<script>
+  async function loadCustomers() {
+    const body = document.getElementById('customersBody');
+    try {
+      const data = await adminApiRequest('/admin/customers');
+      renderCustomers(data.customers);
+    } catch (err) {
+      body.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${err.message}</td></tr>`;
+    }
+  }
+
+  function renderCustomers(customers) {
+    const body = document.getElementById('customersBody');
+    if (customers.length === 0) {
+      body.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No customers yet.</td></tr>`;
+      return;
+    }
+
+    body.innerHTML = customers.map(c => `
+      <tr>
+        <td class="fw-semibold">${c.full_name}</td>
+        <td class="small">${c.email}</td>
+        <td class="small text-muted">${c.phone || '—'}</td>
+        <td class="small text-muted">${formatDate(c.created_at)}</td>
+        <td><span class="status-badge status-${c.status === 'active' ? 'confirmed' : 'cancelled'}">${c.status}</span></td>
+        <td>
+          ${c.status === 'active'
+            ? `<button class="btn btn-sm btn-outline-danger" onclick="toggleStatus(${c.id}, 'blocked')">Block</button>`
+            : `<button class="btn btn-sm btn-chai-outline" onclick="toggleStatus(${c.id}, 'active')">Unblock</button>`
+          }
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  async function toggleStatus(id, newStatus) {
+    const action = newStatus === 'blocked' ? 'block' : 'unblock';
+    if (!confirm(`Are you sure you want to ${action} this customer?`)) return;
+
+    try {
+      await adminApiRequest(`/admin/customers/${id}/status`, { method: 'PUT', body: { status: newStatus } });
+      showAdminToast(`Customer ${action}ed.`, 'success');
+      await loadCustomers();
+    } catch (err) {
+      showAdminToast(err.message, 'error');
+    }
+  }
+
+  loadCustomers();
+</script>
+</body>
+</html>

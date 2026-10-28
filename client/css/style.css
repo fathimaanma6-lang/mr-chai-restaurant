@@ -1,0 +1,319 @@
+/* ============================================================
+   Mr. Chai Restaurant — Shared Design System
+   Used by both the customer site and the admin panel.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* ---- Color tokens ---- */
+  --chai-cream: #FAF3E8;
+  --chai-cream-dark: #F0E3CC;
+  --chai-brown: #3D2817;
+  --chai-brown-light: #6B4A32;
+  --chai-clay: #C1622D;
+  --chai-clay-dark: #A34F22;
+  --chai-gold: #D9A441;
+  --chai-gold-light: #EFCB7E;
+  --chai-green: #5B7553;
+  --chai-red: #B3452C;
+  --chai-white: #FFFEFB;
+
+  /* ---- Type tokens ---- */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* ---- Layout tokens ---- */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-card: 0 2px 12px rgba(61, 40, 23, 0.08);
+  --shadow-card-hover: 0 8px 24px rgba(61, 40, 23, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--chai-cream);
+  color: var(--chai-brown);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, .display-font {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--chai-brown);
+}
+
+.font-mono { font-family: var(--font-mono); }
+
+a { color: var(--chai-clay); text-decoration: none; }
+a:hover { color: var(--chai-clay-dark); }
+
+/* ============================================================
+   Navbar
+   ============================================================ */
+.chai-navbar {
+  background-color: var(--chai-brown);
+  padding: 0.9rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.chai-navbar .navbar-brand {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--chai-cream) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chai-navbar .navbar-brand .steam {
+  color: var(--chai-gold);
+  font-size: 1.1rem;
+}
+
+.chai-navbar .navbar-logo-img {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+}
+
+.chai-navbar .nav-link {
+  color: var(--chai-cream-dark) !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.chai-navbar .nav-link:hover,
+.chai-navbar .nav-link.active {
+  background-color: rgba(217, 164, 65, 0.15);
+  color: var(--chai-gold-light) !important;
+}
+
+.chai-navbar .cart-badge {
+  background-color: var(--chai-clay);
+  color: white;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  vertical-align: top;
+  margin-left: 0.25rem;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn-chai-primary {
+  background-color: var(--chai-clay);
+  border-color: var(--chai-clay);
+  color: white;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.5rem;
+  transition: all 0.15s ease;
+}
+.btn-chai-primary:hover {
+  background-color: var(--chai-clay-dark);
+  border-color: var(--chai-clay-dark);
+  color: white;
+  transform: translateY(-1px);
+}
+
+.btn-chai-outline {
+  background-color: transparent;
+  border: 1.5px solid var(--chai-brown);
+  color: var(--chai-brown);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.5rem;
+  transition: all 0.15s ease;
+}
+.btn-chai-outline:hover {
+  background-color: var(--chai-brown);
+  color: var(--chai-cream);
+}
+
+.btn-chai-gold {
+  background-color: var(--chai-gold);
+  border-color: var(--chai-gold);
+  color: var(--chai-brown);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.5rem;
+}
+.btn-chai-gold:hover {
+  background-color: var(--chai-gold-light);
+  color: var(--chai-brown);
+}
+
+/* ============================================================
+   Cards
+   ============================================================ */
+.chai-card {
+  background-color: var(--chai-white);
+  border: 1px solid var(--chai-cream-dark);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+.chai-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.food-card-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background-color: var(--chai-cream-dark);
+}
+
+.food-card-price {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--chai-clay);
+  font-size: 1.15rem;
+}
+
+/* ============================================================
+   Forms
+   ============================================================ */
+.chai-form-control {
+  border: 1.5px solid var(--chai-cream-dark);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1rem;
+  background-color: var(--chai-white);
+  font-family: var(--font-body);
+}
+.chai-form-control:focus {
+  border-color: var(--chai-clay);
+  box-shadow: 0 0 0 3px rgba(193, 98, 45, 0.15);
+  outline: none;
+}
+
+.auth-panel {
+  background-color: var(--chai-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  max-width: 440px;
+  margin: 3rem auto;
+  padding: 2.5rem;
+}
+
+/* ============================================================
+   Ticket / receipt component — the signature element,
+   used for order confirmations and order history rows.
+   ============================================================ */
+.ticket {
+  background-color: var(--chai-white);
+  border-radius: var(--radius-sm);
+  position: relative;
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-mono);
+}
+.ticket::before,
+.ticket::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: var(--chai-cream);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ticket::before { left: -8px; }
+.ticket::after { right: -8px; }
+
+.ticket-dashed {
+  border-top: 2px dashed var(--chai-cream-dark);
+}
+
+/* ============================================================
+   Status badges
+   ============================================================ */
+.status-badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 50px;
+  display: inline-block;
+}
+.status-pending { background-color: #F5E1C4; color: #8A5A1E; }
+.status-confirmed { background-color: #D6E4D0; color: var(--chai-green); }
+.status-preparing { background-color: #FBE3D5; color: var(--chai-clay-dark); }
+.status-out_for_delivery { background-color: #D9E8F0; color: #2C5F7A; }
+.status-delivered { background-color: #D6E4D0; color: var(--chai-green); }
+.status-cancelled { background-color: #F3D6D0; color: var(--chai-red); }
+.status-paid { background-color: #D6E4D0; color: var(--chai-green); }
+.status-unpaid { background-color: #F3D6D0; color: var(--chai-red); }
+
+/* ============================================================
+   Sections
+   ============================================================ */
+.chai-section {
+  padding: 4rem 0;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  color: var(--chai-clay);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.chai-footer {
+  background-color: var(--chai-brown);
+  color: var(--chai-cream-dark);
+  padding: 2.5rem 0;
+  margin-top: 4rem;
+}
+.chai-footer a { color: var(--chai-gold-light); }
+
+/* ============================================================
+   Toast notification (used by js/app.js)
+   ============================================================ */
+.chai-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background-color: var(--chai-brown);
+  color: var(--chai-cream);
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  font-weight: 500;
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  max-width: 320px;
+}
+.chai-toast.show { opacity: 1; transform: translateY(0); }
+.chai-toast.error { background-color: var(--chai-red); }
+.chai-toast.success { background-color: var(--chai-green); }
+
+/* ============================================================
+   Utility
+   ============================================================ */
+.text-clay { color: var(--chai-clay); }
+.text-gold { color: var(--chai-gold); }
+.bg-chai-cream-dark { background-color: var(--chai-cream-dark); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
